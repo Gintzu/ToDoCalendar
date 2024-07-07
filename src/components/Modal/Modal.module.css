@@ -1,0 +1,12 @@
+.modal {
+	position: absolute;
+	top: 40%;
+	left: 35%;
+	background-color: #888383;
+	width: 500px;
+	height: 500px;
+	border: 1px solid rgb(179, 179, 179);
+	-radius: 15px;
+	overflow: hidden;
+	margin: 0 15px 160px;
+}

@@ -1,0 +1,25 @@
+.button {
+	border-radius: 6px;
+	padding: 8px 30px;
+	font-family: inherit;
+	cursor: pointer;
+	transition: background 0.25s;
+	font-size: 16px;
+	border: none;
+}
+
+.calendarButton {
+	border-radius: 3px;
+	background: rgba(255, 255, 255, 0.03);
+	color: #fff;
+	padding: 20px;
+	border: none;
+	cursor: pointer;
+	text-align: start;
+	display: block;
+	width: 100%;
+}
+
+.calendarButton:hover {
+	background: #222096;
+}
