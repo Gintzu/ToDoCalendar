@@ -20,3 +20,5 @@ export const MONTHS = {
 	'10': 'Ноябрь',
 	'11': 'Декабрь',
 } as any;
+
+export const USERS_STORAGE_KEY = 'users';

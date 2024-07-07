@@ -1,0 +1,20 @@
+.container {
+	position: fixed;
+	top: 0;
+	width: calc(100vw - 16px);
+	background-color: #f0f0f0;
+	border-bottom: 1px solid gray;
+	min-height: 48px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 0px 16px;
+	justify-content: space-between;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+.user {
+	display: flex;
+	gap: 24px;
+	align-items: center;
+}
