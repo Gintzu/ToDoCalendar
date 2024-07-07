@@ -1,0 +1,60 @@
+.modalBackdrop {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.calendar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.calendar table {
+	border: 1px solid;
+    border-collapse: collapse;
+	min-height: 150px;
+}
+
+.calendar thead {
+	
+}
+
+.calendar th {
+	border: 1px solid;
+    border-collapse: collapse;
+	min-width: 150px;
+}
+
+.calendar td {
+	border: 1px solid;
+    border-collapse: collapse;
+
+}
+
+.calendar tr {
+	border: 1px solid;
+    border-collapse: collapse;
+
+}
+
+.day {
+	height: 150px;
+	cursor: pointer;
+}
+
+.alignRight {
+	text-align: right;
+}
+
+.day span {
+	
+	padding: 0px 4px;
+}
