@@ -1,61 +1,71 @@
-import React, {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from 'react';
+import React, { createContext, useCallback, useContext, useMemo } from 'react';
 import { ITask } from '../utils/interfaces';
+import { useUsers } from './userProvider';
 
-const ToDoContext = createContext({} as IToDo);
+const ToDoContext = createContext({} as IContext);
 
 interface IProps {
 	children: React.ReactNode;
 }
 
+interface IContext {
+	addTask: (dayId: string, taskData: ITask) => void;
+}
+
 export const ToDoProvider = (props: IProps) => {
-	const [tasks, setTasks] = useState<Array<ITask>>([]);
+	const { setCurrentUser } = useUsers();
+	const addTask = useCallback(
+		(dayId: string, taskData: ITask) => {
+			//@ts-expect-error
+			setCurrentUser((prevUserData: IUser) => {
+				const mergeTasks = () => {
+					if (prevUserData.busyDays[dayId]) {
+						return [...prevUserData.busyDays[dayId], taskData];
+					}
+					return [taskData];
+				};
+				return {
+					...prevUserData,
+					busyDays: {
+						...prevUserData.busyDays,
+						[dayId]: mergeTasks(),
+					},
+				};
+			});
+		},
+		[setCurrentUser]
+	);
 
-	useEffect(() => {
-		const savedTasks = getFromLocalStorage();
-		if (savedTasks.length) setTasks(savedTasks);
-	}, []);
+	/**
+	 * updateTask (dayId, taskId, newData) изменяет конкретную задачу в конкретном дне, setCurrentUser
+	 * deleteTask - удаляет задачу
+	 */
 
-	useEffect(() => {
-		setToLocalStorage(tasks);
-	}, [tasks]);
+	// const updateTask = useCallback((t: TTask, idx: number) => {
+	// 	setTasks((prev) => {
+	// 		const updatedList = [...prev];
+	// 		updatedList[idx] = t;
+	// 		return updatedList;
+	// 	});
+	// }, []);
 
-	const addTask = useCallback((t: ITask) => {
-		setTasks((prev) => [...prev, t]);
-	}, []);
-
-	const updateTask = useCallback((t: ITask, idx: number) => {
-		setTasks((prev) => {
-			const updatedList = [...prev];
-			updatedList[idx] = t;
-			return updatedList;
-		});
-	}, []);
-
-	const deleteTask = useCallback((idx: number) => {
-		setTasks((prev) => {
-			const updatedList = [...prev];
-			if (idx > -1) {
-				updatedList.splice(idx, 1);
-			}
-			return updatedList;
-		});
-	}, []);
+	// const deleteTask = useCallback((idx: number) => {
+	// 	setTasks((prev) => {
+	// 		const updatedList = [...prev];
+	// 		if (idx > -1) {
+	// 			updatedList.splice(idx, 1);
+	// 		}
+	// 		return updatedList;
+	// 	});
+	// }, []);
 
 	const contextValue = useMemo(
 		() => ({
-			tasks,
 			addTask,
-			updateTask,
-			deleteTask,
+			//updateTask,
+			//deleteTask,
 		}),
-		[tasks, addTask, updateTask, deleteTask]
+		[addTask] //updateTask, deleteTask]
 	);
 
 	return (

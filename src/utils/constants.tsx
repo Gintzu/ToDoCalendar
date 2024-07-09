@@ -22,3 +22,5 @@ export const MONTHS = {
 } as any;
 
 export const USERS_STORAGE_KEY = 'users';
+
+export const LOCAL_STORAGE_KEY = 'appData';

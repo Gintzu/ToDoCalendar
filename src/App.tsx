@@ -1,33 +1,19 @@
-import styles from './App.module.css';
-import { useState, useEffect } from 'react';
+import { SetStateAction, useState } from 'react';
 import { Button } from './components/Button/Button';
 import { Calendar } from './components/Calendar/Calendar';
-import { Header } from './components/Calendar/Header/Header';
 import { Input } from './components/Input/Input';
-import { USERS_STORAGE_KEY } from './utils/constants';
-import { IUser, ITask } from './utils/interfaces';
+
+import styles from './App.module.css';
+import { useToDo } from './controllers/ToDoProvider';
+import { Header } from './components/Calendar/Header/Header';
+import { IUser } from './utils/interfaces';
+import { useUsers } from './controllers/userProvider';
 
 function App() {
-	const [users, setUsers] = useState<Array<IUser>>();
 	const [name, setName] = useState('');
-	const [currentUser, setCurrentUser] = useState<IUser | undefined>();
-	//const [isOpenedForm, setIsOpenedForm] = useState(false)
 
-	useEffect(() => {
-		const rawData = localStorage.getItem(USERS_STORAGE_KEY) || '[]';
-		const parsedData = JSON.parse(rawData);
-		if (!parsedData) {
-			return;
-		}
-		setUsers(parsedData);
-	}, []);
-
-	const createUser = (newUser: IUser): void => {
-		const prevUsersList = users || [];
-		const newUsersList = [...prevUsersList, newUser];
-		localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(newUsersList));
-		setUsers(newUsersList);
-	};
+	const { createUser, setCurrentUser, currentUser, users } = useUsers();
+	const { addTask } = useToDo();
 
 	const handleRegistrationClick = () => {
 		if (!name) return;
@@ -38,22 +24,12 @@ function App() {
 		};
 		createUser(newUser);
 		setCurrentUser(newUser);
+		setName('');
 	};
-	// создать, сохранить в стейте куррент юзер + обновить локал сторадж + обновить стейт в Календарь тсх который рендерит модалку.
-	// чтобы в модалке сразу появлась новая таска
+
+	// + создать, причем сохранить в стейте куррент юзер + обновить локал сторадж
+	// обновить стейт в Календарь тсх, который рендерит модалку, чтобы в модалке сразу появлиось тоже новая таска
 	// все то же самое для удаления и редактирования
-
-	const addTask = (dayId: string, taskData: ITask) => {
-		setCurrentUser({
-			...currentUser,
-
-			busyDays: {
-				...prevUserData.busyDays,
-
-				[dayId]: [prevUserData?.busyDays[dayId], taskData],
-			},
-		});
-	};
 
 	return (
 		<div>
@@ -71,7 +47,7 @@ function App() {
 						Зарегистрироваться
 					</Button>
 					{!!users &&
-						users.map((u) => {
+						users.map((u: SetStateAction<IUser | undefined>) => {
 							return (
 								<Button
 									key={u.id}
